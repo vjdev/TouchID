@@ -25,16 +25,17 @@ class ViewController: UIViewController {
         let context: LAContext = LAContext()
         let myLocalizedReasonString = "Authentication is needed to access your Home ViewController."
         var authError: NSError?
-        
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &authError) {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: myLocalizedReasonString) { [weak self](success, error) in
-                if success {
-                    DispatchQueue.main.async {
-                        self?.alert(message: "Success")
-                    }
-                }else {
-                    DispatchQueue.main.async {
-                        self?.alert(message: "Failed")
+                if context.biometryType == .touchID {
+                    if success {
+                        DispatchQueue.main.async {
+                            self?.alert(message: "Success")
+                        }
+                    }else {
+                        DispatchQueue.main.async {
+                            self?.alert(message: "Failed")
+                        }
                     }
                 }
             }
